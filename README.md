@@ -1,6 +1,6 @@
 # GYM Management System (Gym Master)
 <h1 style="font-size:20px">Responsive Gym App Using Mern Stack</h1>
-<p><a href="https://gym-master-7.netlify.app/">View The Live Website Deployment </a></p>
+
 
 <h2 style="font-size:20px">Technology used to make this website</h2>
 
