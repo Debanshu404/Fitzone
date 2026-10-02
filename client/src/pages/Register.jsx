@@ -1,53 +1,42 @@
-
-// aos 
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Input } from "../components";
 import { BASE_URL } from '../utils/fetchData';
-import AOS from 'aos'; 
-import 'aos/dist/aos.css'; 
 
 const Register = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [city, setCity] = useState("");
-  const [contact, setContact] = useState("");
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [city, setCity] = useState('');
+  const [contact, setContact] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (!/^[A-Za-z]+$/.test(name)) {
-      toast.error("Name must contain only alphabets");
+    if (!/^[A-Za-z ]+$/.test(name)) {
+      toast.error('Name must contain only alphabets and spaces');
       return;
     }
 
-    if (!/^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(email)) {
-      toast.error("Please enter a valid email address");
+    if (!/^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/i.test(email)) {
+      toast.error('Please enter a valid email address');
       return;
     }
 
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    if (!passwordPattern.test(password)) {
-      toast.error("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number");
+    if (password.length < 6) {
+      toast.error('Password must be at least 6 characters long');
       return;
     }
 
-    if (!/^[A-Za-z ]+$/.test(city)) {
-      toast.error("City must contain only alphabets and spaces");
+    if (!city.trim()) {
+      toast.error('Please enter your city');
       return;
     }
 
-    const phoneNumberPattern = /^(9|8|7|6)\d{9}$/;
-    if (!phoneNumberPattern.test(contact)) {
-      toast.error("Phone number must start with 9, 8, 7, or 6 and contain exactly 10 digits");
-      return;
-    }
-
-    console.log(name, password, email, city, contact);
+    setLoading(true);
 
     try {
       const res = await axios.post(`${BASE_URL}/api/v1/auth/register`, {
@@ -59,96 +48,131 @@ const Register = () => {
       });
 
       if (res && res.data.success) {
-        toast.success(res.data.message);
-        navigate("/login");
+        toast.success(res.data.message || 'Account created successfully!');
+        navigate('/login');
       } else {
-        toast.error(res.data.message);
+        toast.error(res.data.message || 'Registration failed');
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
+      toast.error('Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Initialize AOS on component mount
-  useEffect(() => {
-    AOS.init({    duration: 1000, // Animation duration in milliseconds
-      easing: 'ease-in-out', // Animation easing
-      offset: 120, // Trigger animation before the element comes into view
-      once: true });
-  }, []);
-
   return (
-    <div className='bg-gray-900'>
-      <div className='container mx-auto px-6'>
-        <form
-          className='flex w-full h-screen justify-center items-center flex-col gap-5'
-          onSubmit={onSubmit}
-          data-aos="fade-up" // Add AOS animation
-        >
-          <h2 className='text-center text-4xl text-white font-bold'>Register</h2>
+    <div className="min-h-screen bg-[#faf8f5] noise-bg flex items-center justify-center px-4 py-16">
+      <div className="w-full max-w-lg bg-white rounded-3xl p-8 sm:p-10 shadow-2xl border-2 border-neutral-100 text-center relative">
+        {/* Playful Brand Logo */}
+        <Link to="/" className="inline-block mb-3">
+          <span className="brand-script text-4xl text-ef-blue font-bold -rotate-3 inline-block hover:rotate-0 transition-transform">
+            Fitzone
+          </span>
+        </Link>
 
-          <Input 
-            type="text"
-            placeholder="Name"
-            name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            minLength="4"
-            maxLength="30"
-            data-aos="zoom-in" // Add AOS animation
-          />
+        {/* Editorial Heading */}
+        <h1 className="font-condensed-heading text-4xl sm:text-5xl uppercase tracking-tight text-neutral-900 mb-1 leading-none">
+          JOIN THE SQUAD
+        </h1>
+        <p className="font-serif italic text-lg text-neutral-500 mb-8">
+          Start your transformation journey today
+        </p>
 
-          <Input 
-            type="email"
-            placeholder="Email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            data-aos="zoom-in" // Add AOS animation
-          />
+        <form onSubmit={onSubmit} className="space-y-4 text-left">
+          <div>
+            <label className="block text-xs font-black uppercase tracking-wider text-neutral-600 mb-1">
+              Full Name
+            </label>
+            <input
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Alex Walker"
+              className="w-full px-4 py-3 rounded-xl border border-neutral-300 focus:border-ef-blue focus:ring-2 focus:ring-ef-blue/20 outline-none transition-all font-medium text-neutral-900 text-sm"
+            />
+          </div>
 
-          <Input 
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            data-aos="zoom-in" // Add AOS animation
-          />
+          <div>
+            <label className="block text-xs font-black uppercase tracking-wider text-neutral-600 mb-1">
+              Email Address
+            </label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="athlete@fitzone.com"
+              className="w-full px-4 py-3 rounded-xl border border-neutral-300 focus:border-ef-blue focus:ring-2 focus:ring-ef-blue/20 outline-none transition-all font-medium text-neutral-900 text-sm"
+            />
+          </div>
 
-          <Input 
-            type="text"
-            placeholder="City"
-            name="city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            minLength="4"
-            maxLength="35"
-            data-aos="zoom-in" // Add AOS animation
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-black uppercase tracking-wider text-neutral-600 mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full px-4 py-3 rounded-xl border border-neutral-300 focus:border-ef-blue focus:ring-2 focus:ring-ef-blue/20 outline-none transition-all font-medium text-neutral-900 text-sm"
+              />
+            </div>
 
-          <Input 
-            type="text"
-            placeholder="Phone"
-            name="phone"
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
-            data-aos="zoom-in" // Add AOS animation
-          />
+            <div>
+              <label className="block text-xs font-black uppercase tracking-wider text-neutral-600 mb-1">
+                City / Location
+              </label>
+              <input
+                type="text"
+                required
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                placeholder="Metropolis"
+                className="w-full px-4 py-3 rounded-xl border border-neutral-300 focus:border-ef-blue focus:ring-2 focus:ring-ef-blue/20 outline-none transition-all font-medium text-neutral-900 text-sm"
+              />
+            </div>
+          </div>
 
-          <Link to="/login" className='text-white opacity-85 font-medium' data-aos="fade-in">
-            Already a registered user? <span className='underline text-blue-600 font-semibold'>Login</span>
-          </Link>
+          <div>
+            <label className="block text-xs font-black uppercase tracking-wider text-neutral-600 mb-1">
+              Contact Phone
+            </label>
+            <input
+              type="tel"
+              required
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+              placeholder="9876543210"
+              className="w-full px-4 py-3 rounded-xl border border-neutral-300 focus:border-ef-blue focus:ring-2 focus:ring-ef-blue/20 outline-none transition-all font-medium text-neutral-900 text-sm"
+            />
+          </div>
 
-          <button 
-            type='submit' 
-            className='btn px-5 py-2 font-normal outline-none border border-white rounded-sm text-xl text-white hover:text-black hover:bg-white transition-all ease-in w-full max-w-[750px]'
-            data-aos="slide-up" // Add AOS animation
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-wave-action w-full mt-4 inline-flex items-center justify-center space-x-2 bg-ef-pink text-white py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:opacity-95 shadow-lg transition-all duration-300 group disabled:opacity-50"
           >
-            Submit
+            <svg className="btn-wave-layer" fill="none" preserveAspectRatio="none" viewBox="0 0 1200 40">
+              <path
+                d="M0 20 C 150 5, 250 35, 400 20 C 550 5, 650 35, 800 20 C 950 5, 1050 35, 1200 20 L 1200 40 L 0 40 Z"
+                fill="#ffffff"
+              />
+            </svg>
+            <span className="relative z-10">{loading ? 'CREATING ACCOUNT...' : 'CREATE ATHLETE ACCOUNT'}</span>
+            <span className="btn-icon-bounce relative z-10">→</span>
           </button>
         </form>
+
+        <div className="mt-8 pt-6 border-t border-neutral-100 text-xs font-semibold text-neutral-500">
+          Already registered?{' '}
+          <Link to="/login" className="text-ef-blue font-extrabold hover:underline">
+            Sign In Here
+          </Link>
+        </div>
       </div>
     </div>
   );
