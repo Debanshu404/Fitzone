@@ -6,8 +6,11 @@ import * as dotenv from "dotenv";
 
 const app = express();
 
-// initialise downlaoded package
-app.use(cors());
+// initialise downloaded package
+app.use(cors({
+    origin: true,
+    credentials: true,
+}));
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -47,6 +50,8 @@ const startServer = async () => {
 }
 
 startServer();
+
+export default app;
 
 
 
