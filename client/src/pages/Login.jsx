@@ -32,7 +32,8 @@ const Login = () => {
         toast.error(res.data.message || 'Invalid credentials');
       }
     } catch (error) {
-      toast.error('Authentication error. Please check credentials.');
+      const errMsg = error.response?.data?.message || 'Authentication error. Please check credentials.';
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }

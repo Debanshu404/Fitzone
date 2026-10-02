@@ -35,13 +35,12 @@ app.use("/api/v1/feedback", feedBackRoute);
 
 
 const startServer = async () => {
-    try{
-        connectDB(process.env.MONGODB_URI);
+    try {
+        await connectDB(process.env.MONGODB_URI);
         app.listen(PORT, () => {
-         console.log(`server is running on port ${PORT}`);
+            console.log(`server is running on port ${PORT}`);
         });        
     }
-
     catch(err){
         console.log(err || "some error in starting server");
     }

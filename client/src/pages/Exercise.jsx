@@ -1,34 +1,49 @@
-
 import React, { useState, useEffect } from 'react';
 import { ExerciseCard, SearchInput } from '../components';
-import AOS from 'aos'; 
-import 'aos/dist/aos.css'; 
+import { fetchData, exerciseOptions } from '../utils/fetchData';
 
 const Exercise = () => {
-  const [bodyPart, setBodyPart] = useState("all");
+  const [bodyPart, setBodyPart] = useState('all');
   const [exercises, setExercises] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    AOS.init();
+    const fetchInitialExercises = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchData('https://exercisedb.p.rapidapi.com/exercises?limit=30', exerciseOptions);
+        if (Array.isArray(data)) {
+          setExercises(data);
+        }
+      } catch (err) {
+        console.error('Initial exercises fetch error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInitialExercises();
   }, []);
 
   return (
-    <section className='bg-gray-900'>
-
-
+    <div className="bg-[#faf8f5] noise-bg min-h-screen text-neutral-900 pb-24">
       <SearchInput
         setExercises={setExercises}
         bodyPart={bodyPart}
         setBodyPart={setBodyPart}
-        data-aos="fade-up" // Animation for SearchInput
       />
-      <ExerciseCard
-        exercises={exercises}
-        bodyPart={bodyPart}
-        setExercises={setExercises}
-        data-aos="fade-up" // Animation for ExerciseCard
-      />
-    </section>
+      {loading ? (
+        <div className="flex justify-center items-center py-24 text-lg font-bold text-ef-blue">
+          Loading 1,300+ Exercise Tutorials...
+        </div>
+      ) : (
+        <ExerciseCard
+          exercises={exercises}
+          bodyPart={bodyPart}
+          setExercises={setExercises}
+        />
+      )}
+    </div>
   );
 };
 

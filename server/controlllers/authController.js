@@ -55,7 +55,7 @@ const registerController = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "error in registration",
-            error
+            error: error?.message || error
         });
     }
 
@@ -115,7 +115,7 @@ const loginController = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Error in login",
-            err
+            err: err?.message || err
         })
     }
 

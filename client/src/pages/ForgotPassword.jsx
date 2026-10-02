@@ -33,7 +33,8 @@ const ForgotPassword = () => {
         toast.error(res.data.message || 'Failed to reset password');
       }
     } catch (error) {
-      toast.error('Error resetting password. Please check your email.');
+      const errMsg = error.response?.data?.message || 'Error resetting password. Please check your email.';
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }
