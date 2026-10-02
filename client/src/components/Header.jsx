@@ -17,6 +17,7 @@ const Header = () => {
   const navLinks = [
     { name: 'ABOUT', href: '#about', isHash: true },
     { name: 'PROGRAMS', href: '#plans', isHash: true },
+    { name: 'PLANNER', href: '/planner', isHash: false },
     { name: 'SERVICES', href: '#services', isHash: true },
     { name: 'COACHES', href: '#trainers', isHash: true },
     { name: 'EXERCISES', href: '/exercise', isHash: false },

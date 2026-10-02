@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header, Footer, ScrollButton, PrivateRoute, AdminRoute, Modal, CustomCursor, Preloader } from "./components";
-import { Register, Login, ForgotPassword, Home, PlanSubscription, Error, Exercise, ExerciseDetail, Profile, UserDashBoard, PlanDetail, AdminDashBoard, CreatePlan, UpdatePlan, Plans, SubscriberList, UserList, FavouriteExercises, PlanDetails, PlanFullDetail, ContactUs, TrainerDetails, Feedback, Feedbacks, FeedbackList} from "./pages";
+import { Register, Login, ForgotPassword, Home, PlanSubscription, Error, Exercise, ExerciseDetail, Profile, UserDashBoard, PlanDetail, AdminDashBoard, CreatePlan, UpdatePlan, Plans, SubscriberList, UserList, FavouriteExercises, PlanDetails, PlanFullDetail, ContactUs, TrainerDetails, Feedback, Feedbacks, FeedbackList, WorkoutHub } from "./pages";
 // import PlanFullDetail from './pages/User/planFullDetail';
 import { Toaster } from 'react-hot-toast';
 import { useAuth } from "./context/auth";
@@ -22,6 +22,8 @@ const App = () => {
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/planner' element={<WorkoutHub />} />
+        <Route path='/hub' element={<WorkoutHub />} />
         <Route path='/exercise' element={auth?.user ? <Exercise /> : <Login />} />
         <Route path='/exercise/:id' element={auth?.user ? <ExerciseDetail /> : <Login />} />
         <Route path='/plan-subscribe/:planid' element={<PlanSubscription/>} />

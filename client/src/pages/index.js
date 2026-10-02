@@ -24,5 +24,6 @@ import TrainerDetails from "./TrainerDetails";
 import Feedback from "./Feedback";
 import Feedbacks from "./User/Feedbacks";
 import FeedbackList from "./Admin/FeedbackList";
+import WorkoutHub from "./WorkoutHub";
 // import PlanFullDetail from "./User/PlanFullDetail";
-export {Home, Register, Login, ForgotPassword, PlanSubscription, Error, About, Exercise, ExerciseDetail, PlanDetail, Profile, UserDashBoard, FavouriteExercises, AdminDashBoard, SubscriberList, CreatePlan, Plans, UpdatePlan, UserList, PlanDetails, PlanFullDetail, ContactUs, TrainerDetails, Feedback, Feedbacks, FeedbackList };
+export {Home, Register, Login, ForgotPassword, PlanSubscription, Error, About, Exercise, ExerciseDetail, PlanDetail, Profile, UserDashBoard, FavouriteExercises, AdminDashBoard, SubscriberList, CreatePlan, Plans, UpdatePlan, UserList, PlanDetails, PlanFullDetail, ContactUs, TrainerDetails, Feedback, Feedbacks, FeedbackList, WorkoutHub };
